@@ -1,0 +1,79 @@
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class CircularLinkedList {
+    private Node head = null;
+    private Node tail = null;
+    public void insert(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+            newNode.next = head;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head;
+        }
+    }
+
+    
+    public void delete(int value) {
+        if (head == null) return;
+
+        Node current = head;
+        Node previous = tail;
+
+        do {
+            if (current.data == value) {
+                if (current == head) {
+                    head = head.next;
+                    tail.next = head;
+                } else if (current == tail) {
+                    tail = previous;
+                    tail.next = head;
+                } else {
+                    previous.next = current.next;
+                }
+                return;
+            }
+            previous = current;
+            current = current.next;
+        } while (current != head);
+    }
+
+    
+    public void display() {
+        if (head == null) {
+            System.out.println("Circular Linked List is empty.");
+            return;
+        }
+
+        Node current = head;
+        do {
+            System.out.print(current.data + " -> ");
+            current = current.next;
+        } while (current != head);
+        System.out.println("(back to head)");
+    }
+
+    public static void main(String[] args) {
+        CircularLinkedList cll = new CircularLinkedList();
+        cll.insert(10);
+        cll.insert(20);
+        cll.insert(30); 
+        cll.insert(40);
+        cll.insert(50);
+        cll.display();  
+        cll.delete(20);
+        cll.display();  
+       
+    }
+}
